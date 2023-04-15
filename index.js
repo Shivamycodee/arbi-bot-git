@@ -1,4 +1,6 @@
 const { Telegraf } = require("telegraf");
+const Bottleneck = require("bottleneck");
+
 
 const binance = require("./binance");
 const bybit = require("./bybit");
@@ -22,6 +24,17 @@ bot.launch({
 // Enable graceful stop
 process.once("SIGINT", () => bot.stop("SIGINT"));
 process.once("SIGTERM", () => bot.stop("SIGTERM"));
+
+// Set up rate limiter
+const limiter = new Bottleneck({
+  maxConcurrent: 1,
+  minTime: 1000 / 30, // 30 messages per second
+});
+
+// Use the rate limiter as a middleware
+bot.use(async (ctx, next) => {
+  return limiter.schedule(() => next());
+});
 
 const channelId = "@arbiByte";
 
@@ -52,7 +65,7 @@ const main = async () => {
       
       const data = await priceDifference(contain, i);
       
-      if(data.perDiff < 0.1) continue;
+      if(data.perDiff < 0.2) continue;
 
       bot.telegram.sendMessage(
         channelId,
@@ -63,11 +76,17 @@ const main = async () => {
 
 🔝 *Max:*
 🌐 *Platform:* ${data.max.plat}
-💰 *Value:* ${data.max.value} ${data.coinSymbol.replace("USDT", "")} 💰
+💰 *Value:* ${data.max.value.toFixed(4)} ${data.coinSymbol.replace(
+          "USDT",
+          ""
+        )} 💰
 
 🔻 *Min:*
 🌐 *Platform:* ${data.min.plat}
-💰 *Value:* ${data.min.value} ${data.coinSymbol.replace("USDT", "")} 💰
+💰 *Value:* ${data.min.value.toFixed(4)} ${data.coinSymbol.replace(
+          "USDT",
+          ""
+        )} 💰
 
 💥 _Seize the opportunity now!_ 💥
 `,

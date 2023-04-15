@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "bottleneck": "^2.19.5",
     "dotenv": "^16.0.3",
     "telegraf": "^4.12.2"
   }

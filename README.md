@@ -14,3 +14,9 @@
 3. BYBIT:
 
   GAT
+
+
+
+  # Channel ID
+
+  @arbiByte
