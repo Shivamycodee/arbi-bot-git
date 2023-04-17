@@ -1,3 +1,5 @@
+import fetch from "node-fetch";
+
 const arr = [
   "MATICUSDT_SPBL",
   "DOGEUSDT_SPBL",
@@ -8,12 +10,9 @@ const arr = [
 ];
 
 const BitGet = async () => {
- 
-
   const priceArr = [];
 
   for (let i = 0; i < arr.length; i++) {
-
     const dataStream = await fetch(
       `https://api.bitget.com/api/spot/v1/market/ticker?symbol=${arr[i]}`
     )
@@ -21,23 +20,20 @@ const BitGet = async () => {
       .then((data) => {
         return data;
       });
-    try{
-    const buy = parseFloat(dataStream.data.buyOne);
-    const sell = parseFloat(dataStream.data.sellOne);
-    const avgPrice = (buy + sell) / 2;
+    try {
+      const buy = parseFloat(dataStream.data.buyOne);
+      const sell = parseFloat(dataStream.data.sellOne);
+      const avgPrice = (buy + sell) / 2;
 
-    priceArr.push({
-      coin: arr[i].split("_")[0],
-      price: parseFloat(avgPrice),
-    });
-
-     }catch(e){
-       console.log("⚠️ ",e)
-       console.log(dataStream);
-     }
-    
+      priceArr.push({
+        coin: arr[i].split("_")[0],
+        price: parseFloat(avgPrice),
+      });
+    } catch (e) {
+      console.log("⚠️ ", e);
+      console.log(dataStream);
+    }
   }
-
 
   const obj = {
     platform: "BITGET",
@@ -48,4 +44,4 @@ const BitGet = async () => {
 
 BitGet();
 
-module.exports = BitGet;
+export default BitGet;

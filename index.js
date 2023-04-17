@@ -1,11 +1,11 @@
-const { Telegraf } = require("telegraf");
-const Bottleneck = require("bottleneck");
+import { Telegraf } from "telegraf";
+import Bottleneck from "bottleneck";
 
 
-const binance = require("./binance");
-const bybit = require("./bybit");
-const bitget = require("./bitget");
-const mexc = require("./mexc");
+import binance from "./binance.js";
+import bybit from "./bybit.js";
+import bitget from "./bitget.js";
+import mexc from "./mexc.js";
 
 
 const TOKEN ="6152531179:AAG6s-Yn_5eJGfQHJHKe9upS65uK_8u-Nd4"
@@ -16,7 +16,7 @@ const bot = new Telegraf(TOKEN);
 // Start webhook via launch method (preferred)
 bot.launch({
   webhook: {
-    domain: "https://bb9f-123-253-12-214.ngrok.io",
+    domain: "65.2.10.183",
     port: 3030,
   },
 });

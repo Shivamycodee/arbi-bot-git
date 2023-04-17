@@ -1,3 +1,5 @@
+import fetch from "node-fetch";
+
 const arr = [
   "DOGEUSDT",
   "ADAUSDT",
@@ -40,4 +42,4 @@ const Binance = async () => {
 
 Binance();
 
-module.exports = Binance;
+export default Binance;
